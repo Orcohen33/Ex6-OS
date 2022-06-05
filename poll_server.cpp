@@ -136,12 +136,21 @@ void *thread_func(void *arg)
         }
         else
         {
-            for (int i = 0; i < fd_count + 1; i++)
+            if (strcmp(buf, "exit") == 0)
             {
-                int client_fd = pfds[i].fd;
-                if (client_fd != listener && client_fd != new_fd)
+                close(new_fd);
+                del_from_pfds(pfds, new_fd, &fd_count);
+                break;
+            }
+            else
+            {
+                for (int i = 0; i < fd_count + 1; i++)
                 {
-                    send(client_fd, buf, bytes, 0);
+                    int client_fd = pfds[i].fd;
+                    if (client_fd != listener && client_fd != new_fd)
+                    {
+                        send(client_fd, buf, bytes, 0);
+                    }
                 }
             }
             bzero(buf, 1024);
@@ -154,7 +163,7 @@ int main(void)
 {
     cout << "Server started" << endl;
     socklen_t addrlen;
-    int newfd;                          // Newly accept()ed socket descriptor
+    int newfd; // Newly accept()ed socket descriptor
     char remoteIP[INET6_ADDRSTRLEN];
     struct sockaddr_storage remoteaddr; // Client address
 

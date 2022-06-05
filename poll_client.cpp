@@ -23,12 +23,12 @@ void *send_to_server(void *args)
     char buf[1024] = {0};
     while (is_connected)
     {
-        cin >> buf;
-        if (strcmp(buf, "exit") == 0)
+        fgets(buf, sizeof(buf), stdin);
+        if (strcmp(buf, "exit\n") == 0)
         {
             send(sockfd, buf, strlen(buf), 0);
             is_connected = false;
-            break;
+            exit(0);
         }
         if (send(sockfd, buf, strlen(buf), 0) == -1)
         {
@@ -50,8 +50,14 @@ void *receive_from_server(void *args)
             cout << "Error receiving message" << endl;
             break;
         }
+        if(strcmp(buf, "exit\n") == 0)
+        {
+            is_connected = false;
+            break;
+        }else{
         cout << "Server: " << buf << endl;
         bzero(buf, 1024);
+        }
     }
     return NULL;
 }
