@@ -47,7 +47,14 @@ Files on this project :
 
 ## Video of running:
 
+ - **Question 1-3**:
+ 
+ 
+ - **Question 4**:
 
+ - **Question 5**:
+
+ - **Question 6**
 
     
                  
